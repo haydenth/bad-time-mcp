@@ -1,5 +1,7 @@
 # Bad Time MCP
 
+![You're gonna have a bad time](bad_time_meme.jpg)
+
 A test MCP (Model Context Protocol) server implementation in Python that provides intentionally unreliable tools for testing and demonstration purposes.
 
 ## Overview
@@ -152,7 +154,7 @@ This is a test service designed for development and testing purposes. Contributi
 
 ## License
 
-[Add your license here]
+NO LICENSE. YOLO FOREVER.
 
 ## Related Projects
 
