@@ -50,7 +50,7 @@ python bad_time_mcp.py --http
 
 ### Docker Usage
 
-The server can be containerized and deployed as a Docker service using Uvicorn.
+The Dockerfile builds a container image but doesn't specify a default command, allowing flexible runtime configuration for development vs production deployments.
 
 **Build the Docker image:**
 
@@ -58,36 +58,42 @@ The server can be containerized and deployed as a Docker service using Uvicorn.
 docker build -t bad-time-mcp .
 ```
 
-**Run as HTTP service:**
+**Development Mode (using FastMCP's built-in HTTP server):**
 
 ```bash
-docker run -p 8000:8000 bad-time-mcp
+# Run in development mode using the Python script's --http flag
+docker run -p 8000:8000 bad-time-mcp python bad_time_mcp.py --http --host 0.0.0.0 --port 8000
 ```
 
-The containerized server will automatically start with Uvicorn and be available at `http://localhost:8000`.
+**Production Mode (using Uvicorn directly):**
+
+```bash
+# Run in production mode using Uvicorn directly for better performance
+docker run -p 8000:8000 bad-time-mcp uvicorn bad_time_mcp:app.http_app --host 0.0.0.0 --port 8000
+```
 
 **Docker Configuration Details:**
 
 - **Base Image**: `python:latest`
-- **Server**: Uvicorn ASGI server (optimal for FastAPI/FastMCP)
 - **Port**: Exposes port 8000
-- **Startup Command**: `uvicorn bad_time_mcp:mcp.app --host 0.0.0.0 --port 8000`
+- **Flexible Command**: No default CMD - specify at runtime
+- **Dev Mode**: Uses FastMCP's built-in HTTP server (`python bad_time_mcp.py --http`)
+- **Prod Mode**: Uses Uvicorn ASGI server directly (`uvicorn bad_time_mcp:app.http_app`)
 
-**Production Deployment:**
+**Production Deployment Options:**
 
-For production environments, consider:
-
-1. **Reverse Proxy Setup:**
+1. **Background Service:**
    ```bash
-   # Example with nginx reverse proxy
-   docker run -d --name bad-time-mcp -p 8000:8000 bad-time-mcp
-   # Configure nginx to proxy to localhost:8000
+   # Run as detached service in production mode
+   docker run -d --name bad-time-mcp -p 8000:8000 bad-time-mcp \
+     uvicorn bad_time_mcp:app.http_app --host 0.0.0.0 --port 8000
    ```
 
-2. **Multiple Workers:**
+2. **With Multiple Workers (for high load):**
    ```bash
-   # Build custom image with gunicorn + uvicorn workers
-   CMD ["gunicorn", "bad_time_mcp:mcp.app", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000"]
+   # Use Gunicorn with Uvicorn workers for production scale
+   docker run -p 8000:8000 bad-time-mcp \
+     gunicorn bad_time_mcp:app.http_app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
    ```
 
 ## Available Tools

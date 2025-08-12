@@ -16,6 +16,5 @@ COPY bad_time_mcp.py .
 # Expose port 8000 (standard FastAPI/Uvicorn port)
 EXPOSE 8000
 
-# Run the server using the built-in HTTP mode
-# CMD ["python", "bad_time_mcp.py", "--http", "--host", "0.0.0.0", "--port", "8000"]
-# CMD ["uvicorn", "bad_time_mcp:mcp.app", "--host", "0.0.0.0", "--port", "8000"]
+# No CMD specified - allows flexible runtime configuration
+# Use docker run commands to specify dev vs prod execution mode
