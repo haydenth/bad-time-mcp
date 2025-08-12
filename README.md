@@ -78,7 +78,6 @@ docker run -p 8000:8000 bad-time-mcp uvicorn bad_time_mcp:app.http_app --host 0.
 - **Port**: Exposes port 8000
 - **Flexible Command**: No default CMD - specify at runtime
 - **Dev Mode**: Uses FastMCP's built-in HTTP server (`python bad_time_mcp.py --http`)
-- **Prod Mode**: Uses Uvicorn ASGI server directly (`uvicorn bad_time_mcp:app.http_app`)
 
 **Production Deployment Options:**
 
@@ -152,7 +151,7 @@ To integrate Bad Time MCP with the Goose CLI tool, use the appropriate extension
    python bad_time_mcp.py --http
    
    # Connect Goose to HTTP MCP server
-   goose session --with-remote-extension 'http://localhost:8000'
+   goose session --with-streamable-http-extension 'http://localhost:8000/mcp'
    ```
 
 3. **Docker Mode:**
@@ -161,21 +160,13 @@ To integrate Bad Time MCP with the Goose CLI tool, use the appropriate extension
    docker run -p 8000:8000 bad-time-mcp
    
    # Connect Goose to containerized MCP service
-   goose session --with-remote-extension 'http://localhost:8000'
-   ```
-
-4. **Alternative HTTP Connection (for streamable extensions):**
-   ```bash
-   # If the above doesn't work, try streamable HTTP extensions
-   goose session --with-streamable-http-extension 'http://localhost:8000'
+   goose session --with-streamable-http-extension 'http://localhost:8000/mcp'
    ```
 
 #### Goose CLI Extension Options Explained
 
 - `--with-extension` - For stdio-based MCP servers (command-line executables)
-- `--with-remote-extension` - For HTTP-based MCP servers  
 - `--with-streamable-http-extension` - For streamable HTTP MCP servers
-- `--with-builtin` - For bundled Goose extensions (not applicable here)
 
 ## Development
 
