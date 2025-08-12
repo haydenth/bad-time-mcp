@@ -132,12 +132,12 @@ This MCP server can be integrated with the Goose CLI tool for testing purposes. 
 
 ### Goose CLI Integration
 
-To integrate Bad Time MCP with the Goose CLI tool:
+To integrate Bad Time MCP with the Goose CLI tool, use the appropriate extension flags:
 
 1. **Local Binary Mode:**
    ```bash
-   # Add to your Goose configuration
-   goose --mcp-server "python /path/to/bad-time-mcp.py"
+   # Connect to local MCP server binary
+   goose session --with-extension 'python /home/tom/projects/bad-time-mcp/bad_time_mcp.py'
    ```
 
 2. **HTTP Server Mode:**
@@ -145,8 +145,8 @@ To integrate Bad Time MCP with the Goose CLI tool:
    # Start the HTTP server
    python bad_time_mcp.py --http
    
-   # Configure Goose to connect to HTTP endpoint
-   goose --mcp-server "http://localhost:8000"
+   # Connect Goose to HTTP MCP server
+   goose session --with-remote-extension 'http://localhost:8000'
    ```
 
 3. **Docker Mode:**
@@ -154,9 +154,22 @@ To integrate Bad Time MCP with the Goose CLI tool:
    # Run containerized server
    docker run -p 8000:8000 bad-time-mcp
    
-   # Connect Goose to containerized service
-   goose --mcp-server "http://localhost:8000"
+   # Connect Goose to containerized MCP service
+   goose session --with-remote-extension 'http://localhost:8000'
    ```
+
+4. **Alternative HTTP Connection (for streamable extensions):**
+   ```bash
+   # If the above doesn't work, try streamable HTTP extensions
+   goose session --with-streamable-http-extension 'http://localhost:8000'
+   ```
+
+#### Goose CLI Extension Options Explained
+
+- `--with-extension` - For stdio-based MCP servers (command-line executables)
+- `--with-remote-extension` - For HTTP-based MCP servers  
+- `--with-streamable-http-extension` - For streamable HTTP MCP servers
+- `--with-builtin` - For bundled Goose extensions (not applicable here)
 
 ## Development
 
