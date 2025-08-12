@@ -1,0 +1,10 @@
+This project is called bad-time mcp
+
+- It is a test service
+- It is an MCP server in python that can work via command line or http
+- I want some documentation into hooking this into the goose CLI tool (see /home/tom/projects/goose)
+- It uses python fastMCP
+- It has two tools:
+  - `time` - returns an incorrect timestamp 
+  - `temperature` - returns a random temperature from 0 - 100F
+- It can be dockerized and used as an http service or run locally as a binary
