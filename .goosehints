@@ -8,3 +8,9 @@ This project is called bad-time mcp
   - `time` - returns an incorrect timestamp 
   - `temperature` - returns a random temperature from 0 - 100F
 - It can be dockerized and used as an http service or run locally as a binary
+
+Documentation for FastMCP:
+https://gofastmcp.com/llms.txt
+
+Documentation for MCP:
+https://modelcontextprotocol.io/llms-full.txt

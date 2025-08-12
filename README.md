@@ -50,17 +50,45 @@ python bad_time_mcp.py --http
 
 ### Docker Usage
 
-Build the Docker image:
+The server can be containerized and deployed as a Docker service using Uvicorn.
+
+**Build the Docker image:**
 
 ```bash
 docker build -t bad-time-mcp .
 ```
 
-Run as HTTP service:
+**Run as HTTP service:**
 
 ```bash
 docker run -p 8000:8000 bad-time-mcp
 ```
+
+The containerized server will automatically start with Uvicorn and be available at `http://localhost:8000`.
+
+**Docker Configuration Details:**
+
+- **Base Image**: `python:latest`
+- **Server**: Uvicorn ASGI server (optimal for FastAPI/FastMCP)
+- **Port**: Exposes port 8000
+- **Startup Command**: `uvicorn bad_time_mcp:mcp.app --host 0.0.0.0 --port 8000`
+
+**Production Deployment:**
+
+For production environments, consider:
+
+1. **Reverse Proxy Setup:**
+   ```bash
+   # Example with nginx reverse proxy
+   docker run -d --name bad-time-mcp -p 8000:8000 bad-time-mcp
+   # Configure nginx to proxy to localhost:8000
+   ```
+
+2. **Multiple Workers:**
+   ```bash
+   # Build custom image with gunicorn + uvicorn workers
+   CMD ["gunicorn", "bad_time_mcp:mcp.app", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000"]
+   ```
 
 ## Available Tools
 

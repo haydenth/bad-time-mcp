@@ -65,7 +65,7 @@ def main():
   
   if args.http:
     logger.info(f'Starting Bad Time MCP HTTP server on {args.host}:{args.port}')
-    mcp.run_http(host=args.host, port=args.port)
+    mcp.run(transport='http', host=args.host, port=args.port)
   else:
     logger.info('Starting Bad Time MCP in stdio mode')
     mcp.run()
